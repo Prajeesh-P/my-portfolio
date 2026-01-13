@@ -55,28 +55,20 @@ const ExperienceSection = () => {
   const experiences = [
     {
       icon: Network,
-      title: "WordPress Developer",
-      company: "Fiverr",
-      period: "2019 - 2020",
+      title: "Software Engineer",
+      company: "Vofox Solutions Pvt Ltd",
+      period: "2021 - 2024",
       description:
-        "Worked on developing and customizing WordPress websites for clients globally.",
+        "Developed and enhanced responsive React.js frontend applications at Vofox Solutions.",
     },
     {
       icon: Layers,
-      title: "Junior Frontend Developer",
-      company: "Sera Programmer",
-      period: "2021 - 2023",
+      title: "Software engineer",
+      company: "Trois Infotech Pvt Ltd",
+      period: "2024 - Present",
       description:
-        "Assisted in building and optimizing user interfaces with a focus on responsive and interactive designs.",
-    },
-    {
-      icon: Code2,
-      title: "JavaScript Developer",
-      company: "OlovJS (Sera Programmer)",
-      period: "2023 - Present",
-      description:
-        "Contributed to developing JavaScript libraries and enhancing framework functionalities.",
-    },
+        "Contributed to frontend development and UI customization for client projects.",
+    }
   ];
 
   return (

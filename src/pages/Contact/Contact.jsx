@@ -51,12 +51,14 @@ export default function Contact() {
       return;
     }
 
+    setStatus("Sending...");
+
     // Create a new FormData object to send to Web3Forms API
     const form = new FormData();
-    form.append("access_key", "90f4b8af-e590-42b0-beaf-10b18f66a703"); // Replace with your Web3Forms access key
+    form.append("access_key", "90f4b8af-e590-42b0-beaf-10b18f66a703"); // Web3Forms access key
     form.append("name", formData.name);
     form.append("email", formData.email);
-    form.append("subject", formData.subject || "New Contact Form Submission");
+    form.append("subject", formData.subject || "New Portfolio Inquiry");
     form.append("message", formData.message);
 
     try {
@@ -69,19 +71,34 @@ export default function Contact() {
       const result = await response.json();
 
       if (response.ok) {
-        setStatus("Message sent successfully!");
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
-        setErrors({});
+        setStatus("Message sent successfully! Redirecting to mail portal...");
+
+        // Prepare mailto link as a direct way to ensure the user gets the message
+        const mailtoLink = `mailto:prajeeshpprabakaran@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`)}`;
+
+        // Use a small timeout to allow the success message to be seen before redirecting
+        setTimeout(() => {
+          window.location.href = mailtoLink;
+          setFormData({
+            name: "",
+            email: "",
+            subject: "",
+            message: "",
+          });
+          setErrors({});
+          setStatus(null);
+        }, 1500);
+
       } else {
         setStatus(result.message || "There was an error sending your message.");
       }
     } catch (error) {
-      setStatus("An error occurred. Please try again.");
+      // Fallback: If the API fails, still provide the mailto link
+      setStatus("API Error. Opening your mail client instead...");
+      const mailtoLink = `mailto:prajeeshpprabakaran@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`)}`;
+      setTimeout(() => {
+        window.location.href = mailtoLink;
+      }, 1000);
       console.error("Error:", error);
     }
   };
@@ -112,7 +129,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold">Email</h3>
-                    <p className="text-gray-400">olovajs@gmail.com</p>
+                    <p className="text-gray-400">prajeeshpprabakaran@gmail.com</p>
                   </div>
                 </div>
 
@@ -122,7 +139,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-semibold">Location</h3>
-                    <p className="text-gray-400">Laxmipure, Natore 6400</p>
+                    <p className="text-gray-400">Kerala,India</p>
                   </div>
                 </div>
               </div>
@@ -136,9 +153,8 @@ export default function Contact() {
                     <input
                       type="text"
                       placeholder="Your Name"
-                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
-                        errors.name ? "border-red-500" : "border-gray-700"
-                      } focus:border-blue-500 focus:outline-none transition-colors`}
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${errors.name ? "border-red-500" : "border-gray-700"
+                        } focus:border-blue-500 focus:outline-none transition-colors`}
                       value={formData.name}
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
@@ -153,9 +169,8 @@ export default function Contact() {
                     <input
                       type="email"
                       placeholder="Your Email"
-                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
-                        errors.email ? "border-red-500" : "border-gray-700"
-                      } focus:border-blue-500 focus:outline-none transition-colors`}
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${errors.email ? "border-red-500" : "border-gray-700"
+                        } focus:border-blue-500 focus:outline-none transition-colors`}
                       value={formData.email}
                       onChange={(e) =>
                         setFormData({ ...formData, email: e.target.value })
@@ -172,9 +187,8 @@ export default function Contact() {
                     <input
                       type="text"
                       placeholder="Subject"
-                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
-                        errors.subject ? "border-red-500" : "border-gray-700"
-                      } focus:border-blue-500 focus:outline-none transition-colors`}
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${errors.subject ? "border-red-500" : "border-gray-700"
+                        } focus:border-blue-500 focus:outline-none transition-colors`}
                       value={formData.subject}
                       onChange={(e) =>
                         setFormData({ ...formData, subject: e.target.value })
@@ -191,9 +205,8 @@ export default function Contact() {
                     <textarea
                       placeholder="Your Message"
                       rows="4"
-                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${
-                        errors.message ? "border-red-500" : "border-gray-700"
-                      } focus:border-blue-500 focus:outline-none transition-colors resize-none`}
+                      className={`w-full px-4 py-3 rounded-lg bg-white/5 border ${errors.message ? "border-red-500" : "border-gray-700"
+                        } focus:border-blue-500 focus:outline-none transition-colors resize-none`}
                       value={formData.message}
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
@@ -219,11 +232,10 @@ export default function Contact() {
               {/* Status Message */}
               {status && (
                 <div
-                  className={`mt-4 text-center ${
-                    status.includes("success")
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
+                  className={`mt-4 text-center ${status.includes("success")
+                    ? "text-green-400"
+                    : "text-red-400"
+                    }`}
                 >
                   <p>{status}</p>
                 </div>

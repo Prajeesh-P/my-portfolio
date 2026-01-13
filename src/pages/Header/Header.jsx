@@ -41,7 +41,7 @@ export default function Header() {
       text: "Education",
       path: "/education",
     },
-    { id: "projects", icon: FaLaptopCode, text: "Projects", path: "/projects" },
+    // { id: "projects", icon: FaLaptopCode, text: "Projects", path: "/projects" },
     { id: "contact", icon: FaEnvelope, text: "Contact", path: "/contact" },
   ];
 
@@ -53,7 +53,7 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <div className="flex justify-between items-center md:hidden px-2">
               <Link to="/" className="text-white font-bold">Portfolio</Link>
-              <button 
+              <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-white p-2"
               >
@@ -65,30 +65,42 @@ export default function Header() {
             <div className={`${isMenuOpen ? 'block' : 'hidden'} md:block`}>
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-1 lg:gap-2 py-4 md:py-0">
                 {navLinks.map(({ id, icon: Icon, text, path }) => (
-                  <Link
-                    key={id}
-                    to={path}
-                    onClick={() => {
-                      setActiveLink(id);
-                      setIsMenuOpen(false);
-                    }}
-                    className={`px-3 py-2 md:py-1.5 rounded-lg md:rounded-full text-sm font-medium
-                      transition-all duration-300 flex items-center gap-2
-                      hover:bg-white/10 
-                      ${
-                        activeLink === id
+                  id === "contact" ? (
+                    <a
+                      key={id}
+                      href="mailto:prajeeshpprabakaran@gmail.com"
+                      className={`px-3 py-2 md:py-1.5 rounded-lg md:rounded-full text-sm font-medium
+                        transition-all duration-300 flex items-center gap-2
+                        hover:bg-white/10 text-gray-300 hover:text-white
+                      `}
+                    >
+                      <Icon className="text-base" />
+                      <span className="inline">{text}</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={id}
+                      to={path}
+                      onClick={() => {
+                        setActiveLink(id);
+                        setIsMenuOpen(false);
+                      }}
+                      className={`px-3 py-2 md:py-1.5 rounded-lg md:rounded-full text-sm font-medium
+                        transition-all duration-300 flex items-center gap-2
+                        hover:bg-white/10 
+                        ${activeLink === id
                           ? "bg-white/15 text-white"
                           : "text-gray-300 hover:text-white"
-                      }
-                    `}
-                  >
-                    <Icon
-                      className={`text-base ${
-                        activeLink === id ? "scale-110" : ""
-                      }`}
-                    />
-                    <span className="inline">{text}</span>
-                  </Link>
+                        }
+                      `}
+                    >
+                      <Icon
+                        className={`text-base ${activeLink === id ? "scale-110" : ""
+                          }`}
+                      />
+                      <span className="inline">{text}</span>
+                    </Link>
+                  )
                 ))}
               </div>
             </div>
